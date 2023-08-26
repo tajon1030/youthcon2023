@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.14' apply(false)
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+allprojects { // 하위 모듈에 모두 설정이 됨
+    group = 'hello'
+    version = '0.0.1-SNAPSHOT'
+
+    java {
+        sourceCompatibility = '11'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply { plugin('java') }
+    apply { plugin('org.springframework.boot') }
+    apply { plugin('io.spring.dependency-management') }
+
+    // bootJar오류 해결을 위한
+    tasks.named('bootJar') {
+        enabled = false
+    }
+
+    // jar 자바어플리케이션을 실행하기위한 패키징형태
+    tasks.named('jar'){
+        enabled = true
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
